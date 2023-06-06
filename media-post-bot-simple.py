@@ -9,12 +9,9 @@ app = Client("my_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 
 # Function to handle incoming media messages
-@app.on_message(filters.media)
+@bot.on_message(filters.media)
 def handle_media(client, message):
     # Check if the message is an edited message
-    # if the edit_date property of the message is None. 
-    # If it's not None, it means the message is an edited message, and 
-    # the function doesn't proceed with copying and reposting the edited message.
     if message.edit_date is None:
         # Copy the media to the private channel (-100123456789)
         media = client.copy_message(
@@ -36,6 +33,12 @@ def handle_media(client, message):
         client.send_message(
             chat_id="-1001973521419",
             text=f"**Media Name:** {media_name}\n\n**Uploaded By:** {user_id}\n\n**Post ID:** {media_id}\n\n**Command:** `/getpost {media_id}`\n\n**Please use @MultiUseRobot to get the file**"
+        )
+        
+        # Send a response to the user
+        client.send_message(
+            chat_id=message.chat.id,
+            text=f"**Saved Successfully ✅**\n\n**Media Name:** __{media_name}__\n\n**Post ID:** `{media_id}`\n\n**You can retrieve it using `/getpost {media_id}`**"
         )
 
 
